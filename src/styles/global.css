@@ -28,6 +28,8 @@
   }
 
   html {
+    /* Everything is sized in rem, so this one fluid value scales the whole page with the screen. */
+    font-size: clamp(15px, 0.45vw + 10px, 18px);
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
   }
@@ -51,7 +53,8 @@
   }
 
   .section-title {
-    @apply mt-2 font-serif text-3xl font-medium tracking-tight text-ink md:text-4xl;
+    @apply mt-2 font-serif font-medium leading-tight tracking-tight text-ink;
+    font-size: clamp(1.75rem, 1.1rem + 1.6vw, 2.5rem);
   }
 
   .tag {
