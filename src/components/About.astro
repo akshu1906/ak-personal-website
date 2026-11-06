@@ -1,0 +1,49 @@
+---
+import { stats } from '../data/content';
+---
+
+<section id="about" class="scroll-mt-16 pt-20 lg:pt-20" aria-label="About">
+  <p class="eyebrow">About</p>
+  <h2 class="section-title">Engineer by training, product person by choice.</h2>
+
+  <div class="mt-8 grid gap-8 sm:grid-cols-[1fr_200px]">
+    <div class="space-y-4 leading-relaxed text-muted">
+      <p>
+        I'm a <span class="font-medium text-ink">Computer Science graduate from the University of Waterloo</span> (co-op, with a depth in Entrepreneurship), drawn to the intersection of
+        <span class="font-medium text-ink">technology and business</span> — understanding not just what's possible to build, but what's worth building.
+      </p>
+      <p>
+        I'm currently an <span class="font-medium text-ink">AI Product Builder at PAAS Research</span>, a B2B startup, where I drive initiatives across the product lifecycle, from identifying opportunities and defining requirements to development and go-to-market strategy.
+      </p>
+      <p>
+        Across <span class="font-medium text-ink">six co-op terms</span>, I've explored industries from banking and automotive to gaming and healthcare, transitioning from software engineering to product management along the way. That journey has helped me understand both the technical and business sides of building products.
+      </p>
+      <p>
+        I'm naturally curious, love learning how different businesses work, and enjoy solving unfamiliar problems. I'm now exploring <span class="font-medium text-ink">new grad/early career opportunities</span> where I can bring both perspectives together and keep learning.
+      </p>
+    </div>
+
+    <figure class="mx-auto w-48 sm:w-full">
+      <img
+        src="/about.jpg"
+        alt="Akshita smiling at the edge of a lake"
+        width="622"
+        height="690"
+        loading="lazy"
+        class="aspect-[4/5] w-full rounded-2xl object-cover shadow-sm ring-1 ring-line"
+      />
+    </figure>
+  </div>
+
+  <dl class="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
+    {stats.map((s) => (
+      <div class="bg-card p-5">
+        <dt class="sr-only">{s.label}</dt>
+        <dd>
+          <span class="block font-serif text-3xl font-medium text-ink" data-count={s.value}>{s.value}</span>
+          <span class="mt-1 block text-xs leading-snug text-muted">{s.label}</span>
+        </dd>
+      </div>
+    ))}
+  </dl>
+</section>

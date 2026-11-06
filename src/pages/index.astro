@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import About from '../components/About.astro';
+import Experience from '../components/Experience.astro';
+import Projects from '../components/Projects.astro';
+import Recognition from '../components/Recognition.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<Layout>
+  <div id="spotlight" class="pointer-events-none fixed inset-0 z-0 hidden lg:block" aria-hidden="true"></div>
+  <a href="#about" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-card focus:px-3 focus:py-2">Skip to content</a>
+
+  <div class="relative z-10 mx-auto max-w-page px-6 md:px-12 lg:flex lg:justify-between lg:gap-12 lg:px-16">
+    <Sidebar />
+    <main class="lg:w-[54%] lg:py-4">
+      <About />
+      <Experience />
+      <Projects />
+      <Recognition />
+      <Contact />
+    </main>
+  </div>
+</Layout>
+
+<script>
+  const root = document.documentElement;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Theme toggle
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch {}
+  });
+
+  // Cursor spotlight (desktop only)
+  const spot = document.getElementById('spotlight');
+  if (spot && !reduceMotion) {
+    window.addEventListener('pointermove', (e) => {
+      spot.style.background = `radial-gradient(600px at ${e.clientX}px ${e.clientY}px, rgb(var(--accent) / 0.07), transparent 80%)`;
+    });
+  }
+
+  // Highlight the nav link for the section in view
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>('[data-nav]');
+  const sections = [...navLinks].map((a) => document.getElementById(a.dataset.nav!)).filter(Boolean) as HTMLElement[];
+  const setActive = () => {
+    const y = window.scrollY + window.innerHeight * 0.35;
+    let current = sections[0]?.id;
+    for (const s of sections) if (s.offsetTop <= y) current = s.id;
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) current = sections.at(-1)?.id;
+    navLinks.forEach((a) => a.classList.toggle('active', a.dataset.nav === current));
+  };
+  window.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+
+  // Experience filter
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  filterBtns.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      filterBtns.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      document.querySelectorAll<HTMLElement>('[data-track]').forEach((el) => {
+        el.classList.toggle('is-hidden', f !== 'all' && el.dataset.track !== f);
+      });
+    }),
+  );
+
+  // Fade sections in as they scroll into view
+  const revealObs = new IntersectionObserver(
+    (entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); }
+    }),
+    { rootMargin: '0px 0px -8% 0px' },
+  );
+  document.querySelectorAll('.reveal').forEach((el) => revealObs.observe(el));
+
+  // Count up the impact numbers once
+  const countObs = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    countObs.unobserve(e.target);
+    const el = e.target as HTMLElement;
+    const m = el.dataset.count!.match(/^(\D*)(\d+)(.*)$/);
+    if (!m || reduceMotion) return;
+    const [, pre, num, post] = m;
+    const end = Number(num);
+    const start = performance.now();
+    const tick = (t: number) => {
+      const p = Math.min((t - start) / 1100, 1);
+      el.textContent = `${pre}${Math.round(end * (1 - Math.pow(1 - p, 3)))}${post}`;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }), { threshold: 0.6 });
+  document.querySelectorAll('[data-count]').forEach((el) => countObs.observe(el));
+
+  // Copy email
+  const copyBtn = document.getElementById('copy-email');
+  copyBtn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(copyBtn.dataset.email!);
+      copyBtn.textContent = 'Copied ✓';
+    } catch {
+      copyBtn.textContent = 'Press ⌘C';
+    }
+    setTimeout(() => (copyBtn.textContent = 'Copy email'), 1800);
+  });
+</script>

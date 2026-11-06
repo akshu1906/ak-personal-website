@@ -1,0 +1,28 @@
+---
+import { awards, skills } from '../data/content';
+---
+
+<section id="recognition" class="scroll-mt-16 pt-24" aria-label="Recognition and skills">
+  <p class="eyebrow">Recognition &amp; toolkit</p>
+  <h2 class="section-title">A few things I'm proud of.</h2>
+
+  <ul class="mt-8 divide-y divide-line border-y border-line">
+    {awards.map((a) => (
+      <li class="reveal flex flex-col gap-1 py-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+        <span class="font-medium text-ink">{a.name}</span>
+        <span class="text-sm text-muted sm:text-right">{a.detail}</span>
+      </li>
+    ))}
+  </ul>
+
+  <div class="mt-10 grid gap-8 sm:grid-cols-2">
+    {Object.entries(skills).map(([group, items]) => (
+      <div class="reveal">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-faint">{group}</h3>
+        <ul class="mt-3 flex flex-wrap gap-2">
+          {items.map((s) => <li class="rounded-full border border-line bg-card px-3 py-1 text-sm text-ink">{s}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

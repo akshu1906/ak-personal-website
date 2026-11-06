@@ -1,0 +1,67 @@
+---
+import { experience, profile } from '../data/content';
+
+const filters = [
+  { id: 'all', label: 'All' },
+  { id: 'product', label: 'Product' },
+  { id: 'engineering', label: 'Engineering' },
+];
+---
+
+<section id="experience" class="scroll-mt-16 pt-24" aria-label="Experience">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <p class="eyebrow">Experience</p>
+      <h2 class="section-title">Where I've shipped.</h2>
+    </div>
+    <div class="flex gap-2" role="group" aria-label="Filter roles">
+      {filters.map((f, i) => (
+        <button type="button" class="filter-btn" data-filter={f.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+          {f.label}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <ol class="dim-group mt-8 space-y-3">
+    {experience.map((r) => (
+      <li class="dim-item reveal" data-track={r.track}>
+        <article class="group relative grid gap-3 rounded-2xl border border-transparent p-5 transition hover:border-line hover:bg-card hover:shadow-sm sm:grid-cols-[8.5rem_1fr] sm:gap-6 sm:p-6">
+          <p class="pt-1 text-xs font-medium uppercase tracking-wider text-faint">{r.period}</p>
+          <div>
+            <h3 class="font-medium leading-snug text-ink">
+              <a href={r.url} target="_blank" rel="noopener" class="inline-flex items-baseline gap-1 hover:text-accent">
+                {r.title} · {r.company}
+                <svg class="translate-y-px transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+              </a>
+              {r.current && <span class="ml-2 rounded-full bg-accent px-2 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wider text-paper">Current</span>}
+            </h3>
+
+            <p class="mt-3 inline-flex items-baseline gap-2 rounded-lg bg-accent-soft/60 px-3 py-1.5">
+              <span class="font-serif text-lg font-medium text-accent">{r.highlight.value}</span>
+              <span class="text-xs text-muted">{r.highlight.label}</span>
+            </p>
+
+            <p class="mt-4 text-sm italic leading-relaxed text-faint">{r.companyAbout}</p>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{r.work}</p>
+
+            <ul class="mt-4 flex flex-wrap gap-2" aria-label="Skills used">
+              {r.tags.map((t) => <li class="tag">{t}</li>)}
+            </ul>
+          </div>
+        </article>
+      </li>
+    ))}
+  </ol>
+
+  <div class="mt-8 px-5 sm:px-6">
+    <p class="text-xs uppercase tracking-wider text-faint">Education</p>
+    <p class="mt-2 font-medium text-ink">University of Waterloo — Bachelor of Computer Science (Co-op)</p>
+    <p class="text-sm text-muted">Depth in Entrepreneurship · Sep 2021 — May 2026 · Coursework in AI, OOP, Entrepreneurial Strategy, Sales</p>
+
+    <a href={profile.resume} target="_blank" rel="noopener" class="group mt-6 inline-flex items-center gap-2 font-medium text-ink hover:text-accent">
+      View full résumé
+      <svg class="transition group-hover:translate-x-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</section>
