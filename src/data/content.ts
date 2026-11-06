@@ -1,3 +1,6 @@
+// Public files live under the site's base path on GitHub Pages.
+export const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 export const profile = {
   name: 'Akshita Choudhury',
   role: 'Product builder · CS + Business',
@@ -5,7 +8,7 @@ export const profile = {
   email: 'a49choud@uwaterloo.ca',
   linkedin: 'https://www.linkedin.com/in/akshita-choudhury-961807217/',
   github: 'https://github.com/akshu1906',
-  resume: '/resume.pdf',
+  resume: asset('resume.pdf'),
 };
 
 export type Track = 'product' | 'engineering';
@@ -112,9 +115,9 @@ export const featured = {
     'We started from user interviews and observation, built a persona around Gen Z travelers, then iterated on navigation, accessible map pins and item customization. We also outlined a freemium go-to-market with creator and tourism-board partnerships.',
   features: ['Interactive map', 'Time + cost estimator', 'Shared trip boards'],
   tags: ['User research', 'Personas', 'Prototyping', 'Go-to-market'],
-  video: '/travelly-demo.mp4',
-  poster: '/travelly-poster.jpg',
-  slides: '/travelly-slides.pdf',
+  video: asset('travelly-demo.mp4'),
+  poster: asset('travelly-poster.jpg'),
+  slides: asset('travelly-slides.pdf'),
 };
 
 export const projects = [
